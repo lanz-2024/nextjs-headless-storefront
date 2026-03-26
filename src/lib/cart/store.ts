@@ -12,6 +12,7 @@ interface CartState {
   currency: string;
   itemCount: number;
   isLoading: boolean;
+  isOpen: boolean;
   error: string | null;
 
   /** Initialise — creates a cart if none exists */
@@ -20,6 +21,8 @@ interface CartState {
   updateItem(itemId: string, quantity: number): Promise<void>;
   removeItem(itemId: string): Promise<void>;
   clearError(): void;
+  openCart(): void;
+  closeCart(): void;
 }
 
 function sumSubtotal(items: CommerceCartItem[]): number {
@@ -40,6 +43,7 @@ export const useCartStore = create<CartState>()(
       currency: 'USD',
       itemCount: 0,
       isLoading: false,
+      isOpen: false,
       error: null,
 
       async initCart() {
@@ -198,6 +202,14 @@ export const useCartStore = create<CartState>()(
 
       clearError() {
         set({ error: null });
+      },
+
+      openCart() {
+        set({ isOpen: true });
+      },
+
+      closeCart() {
+        set({ isOpen: false });
       },
     }),
     {

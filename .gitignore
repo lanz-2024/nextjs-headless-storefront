@@ -49,3 +49,7 @@ next-env.d.ts
 # Misc
 .cache
 *.pid
+.credentials
+.ssh-credentials
+secrets/
+.clickup-session-context.json
