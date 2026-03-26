@@ -1,0 +1,47 @@
+{
+  "name": "nextjs-headless-storefront",
+  "version": "0.1.0",
+  "description": "Headless e-commerce storefront with WooCommerce + Shopify adapter pattern, ISR, Algolia search, GTM analytics, and WCAG AA",
+  "private": true,
+  "scripts": {
+    "dev": "COMMERCE_PROVIDER=mock next dev --turbopack",
+    "dev:woo": "COMMERCE_PROVIDER=woocommerce next dev --turbopack",
+    "dev:shopify": "COMMERCE_PROVIDER=shopify next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:ci": "vitest run --coverage --reporter=junit",
+    "test:watch": "vitest",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.0",
+    "zod": "^3.24.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^3.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "msw": "^2.7.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}

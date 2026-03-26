@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  storefront:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      COMMERCE_PROVIDER: woocommerce
+      WC_BASE_URL: http://woocommerce:80
+      WC_CONSUMER_KEY: ck_test_key
+      WC_CONSUMER_SECRET: cs_test_secret
+      REVALIDATE_SECRET: dev-revalidate-secret-change-in-production
+    depends_on:
+      woocommerce:
+        condition: service_healthy
+    restart: unless-stopped
+
+  woocommerce:
+    image: wordpress:latest
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - '8080:80'
+    volumes:
+      - wordpress_data:/var/www/html
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:80/wp-login.php']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'wordpress', '-pwordpress']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  adminer:
+    image: adminer
+    ports:
+      - '8888:8080'
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
+  wordpress_data:
