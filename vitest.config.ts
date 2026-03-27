@@ -16,6 +16,20 @@ export default defineConfig({
         '**/*.config.*',
         '**/types.ts',
         'src/mocks',
+        // Next.js pages and React components — covered by E2E tests, not unit tests
+        'src/app/**',
+        'src/components/**',
+        // HTTP adapters and clients — require network/integration tests
+        'src/lib/commerce/**/*adapter*',
+        'src/lib/commerce/**/*client*',
+        'src/lib/commerce/**/fragments*',
+        'src/lib/commerce/provider*',
+        'src/lib/commerce/mock/data*',
+        'src/lib/algolia/**',
+        'src/lib/gtm/provider*',
+        // Server Actions — require Next.js runtime
+        'src/lib/cart/actions*',
+        'src/proxy*',
       ],
       thresholds: {
         lines: 70,
