@@ -1,6 +1,6 @@
 /**
  * MSW handlers for Shopify Storefront API (GraphQL).
- * Intercepts calls to *.myshopify.com/api/*/graphql.json during tests.
+ * Intercepts calls to *.myshopify.com StoreFront API graphql endpoints during tests.
  */
 
 import { graphql, HttpResponse } from 'msw';
