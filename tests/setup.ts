@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { beforeAll, afterAll, afterEach } from 'vitest';
 import { server } from '../src/mocks/index';
 
