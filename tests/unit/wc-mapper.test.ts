@@ -172,8 +172,8 @@ describe('mapWCProduct', () => {
         ...baseWCProduct,
         images: [{}],
       });
-      expect(product.images[0].src).toBe('');
-      expect(product.images[0].alt).toBe('');
+      expect(product.images[0]!.src).toBe('');
+      expect(product.images[0]!.alt).toBe('');
     });
 
     it('returns empty images array when images absent', () => {
@@ -239,7 +239,7 @@ describe('mapWCProduct', () => {
         ...baseWCProduct,
         attributes: [{ name: 'Size', options: 'L' }],
       });
-      expect(product.attributes[0].options).toEqual([]);
+      expect(product.attributes[0]!.options).toEqual([]);
     });
 
     it('returns empty attributes when absent', () => {
