@@ -216,14 +216,14 @@ describe('mapShopifyProduct', () => {
 
     it('maps variant stockStatus from availableForSale', () => {
       const product = mapShopifyProduct(baseProduct);
-      expect(product.variants![0].stockStatus).toBe('instock');
-      expect(product.variants![1].stockStatus).toBe('outofstock');
+      expect(product.variants![0]!.stockStatus).toBe('instock');
+      expect(product.variants![1]!.stockStatus).toBe('outofstock');
     });
 
     it('maps variant selectedOptions into attributes record', () => {
       const product = mapShopifyProduct(baseProduct);
-      expect(product.variants![0].attributes).toEqual({ Size: 'M' });
-      expect(product.variants![1].attributes).toEqual({ Size: 'XL' });
+      expect(product.variants![0]!.attributes).toEqual({ Size: 'M' });
+      expect(product.variants![1]!.attributes).toEqual({ Size: 'XL' });
     });
 
     it('defaults variant sku to empty string when absent', () => {
@@ -253,7 +253,7 @@ describe('mapShopifyProduct', () => {
         },
       };
       const product = mapShopifyProduct(raw as ShopifyProductNode);
-      expect(product.variants![0].sku).toBe('');
+      expect(product.variants![0]!.sku).toBe('');
     });
   });
 
@@ -270,13 +270,13 @@ describe('mapShopifyProduct', () => {
 
     it('falls back to product title when altText is null', () => {
       const product = mapShopifyProduct(baseProduct);
-      expect(product.images[1].alt).toBe('Premium Tee');
+      expect(product.images[1]!.alt).toBe('Premium Tee');
     });
 
     it('defaults width and height to 800 when null', () => {
       const product = mapShopifyProduct(baseProduct);
-      expect(product.images[1].width).toBe(800);
-      expect(product.images[1].height).toBe(800);
+      expect(product.images[1]!.width).toBe(800);
+      expect(product.images[1]!.height).toBe(800);
     });
 
     it('returns empty images when edges empty', () => {
@@ -369,7 +369,7 @@ describe('mapShopifyCart', () => {
   it('maps line items correctly', () => {
     const cart = mapShopifyCart(cartNode);
     expect(cart.items).toHaveLength(1);
-    const item = cart.items[0];
+    const item = cart.items[0]!;
     expect(item.id).toBe('line-1');
     expect(item.productId).toBe('gid://shopify/Product/1');
     expect(item.variantId).toBe('variant-gid-1');
@@ -381,7 +381,7 @@ describe('mapShopifyCart', () => {
 
   it('maps first product image onto cart item', () => {
     const cart = mapShopifyCart(cartNode);
-    expect(cart.items[0].image).toEqual({
+    expect(cart.items[0]!.image).toEqual({
       src: 'https://cdn.shopify.com/img1.jpg',
       alt: 'Front',
     });
@@ -394,11 +394,11 @@ describe('mapShopifyCart', () => {
         edges: [
           {
             node: {
-              ...cartNode.lines.edges[0].node,
+              ...cartNode.lines.edges[0]!.node,
               merchandise: {
-                ...cartNode.lines.edges[0].node.merchandise,
+                ...cartNode.lines.edges[0]!.node.merchandise,
                 product: {
-                  ...cartNode.lines.edges[0].node.merchandise.product,
+                  ...cartNode.lines.edges[0]!.node.merchandise.product,
                   images: { edges: [] },
                 },
               },
@@ -408,7 +408,7 @@ describe('mapShopifyCart', () => {
       },
     };
     const cart = mapShopifyCart(noImageCart);
-    expect(cart.items[0].image).toEqual({ src: '', alt: 'Premium Tee' });
+    expect(cart.items[0]!.image).toEqual({ src: '', alt: 'Premium Tee' });
   });
 
   it('returns empty items array for empty cart', () => {

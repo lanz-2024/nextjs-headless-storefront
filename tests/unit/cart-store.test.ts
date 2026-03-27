@@ -45,13 +45,13 @@ describe('MockAdapter cart operations (mirrors useCartStore logic)', () => {
   it('adds an item to an empty cart', async () => {
     const cart = await adapter.createCart();
     const products = await adapter.getProducts({ limit: 1 });
-    const productId = products.products[0].id;
+    const productId = products.products[0]!.id;
 
     const updated = await adapter.addToCart(cart.id, productId, 1);
 
     expect(updated.items).toHaveLength(1);
-    expect(updated.items[0].productId).toBe(productId);
-    expect(updated.items[0].quantity).toBe(1);
+    expect(updated.items[0]!.productId).toBe(productId);
+    expect(updated.items[0]!.quantity).toBe(1);
     expect(updated.itemCount).toBe(1);
     expect(updated.subtotal).toBeGreaterThan(0);
   });
@@ -59,20 +59,20 @@ describe('MockAdapter cart operations (mirrors useCartStore logic)', () => {
   it('increments quantity when the same item is added twice', async () => {
     const cart = await adapter.createCart();
     const products = await adapter.getProducts({ limit: 1 });
-    const productId = products.products[0].id;
+    const productId = products.products[0]!.id;
 
     await adapter.addToCart(cart.id, productId, 1);
     const updated = await adapter.addToCart(cart.id, productId, 2);
 
     expect(updated.items).toHaveLength(1);
-    expect(updated.items[0].quantity).toBe(3);
+    expect(updated.items[0]!.quantity).toBe(3);
     expect(updated.itemCount).toBe(3);
   });
 
   it('adds two distinct items as separate entries', async () => {
     const cart = await adapter.createCart();
     const products = await adapter.getProducts({ limit: 2 });
-    const [p1, p2] = products.products;
+    const [p1, p2] = products.products as [typeof products.products[0], typeof products.products[0]];
 
     await adapter.addToCart(cart.id, p1.id, 1);
     const updated = await adapter.addToCart(cart.id, p2.id, 1);
@@ -84,10 +84,10 @@ describe('MockAdapter cart operations (mirrors useCartStore logic)', () => {
   it('removes an item from the cart', async () => {
     const cart = await adapter.createCart();
     const products = await adapter.getProducts({ limit: 1 });
-    const productId = products.products[0].id;
+    const productId = products.products[0]!.id;
 
     const afterAdd = await adapter.addToCart(cart.id, productId, 2);
-    const itemId = afterAdd.items[0].id;
+    const itemId = afterAdd.items[0]!.id;
 
     const afterRemove = await adapter.removeFromCart(cart.id, itemId);
 
@@ -99,24 +99,24 @@ describe('MockAdapter cart operations (mirrors useCartStore logic)', () => {
   it('updates item quantity via updateCartItem', async () => {
     const cart = await adapter.createCart();
     const products = await adapter.getProducts({ limit: 1 });
-    const productId = products.products[0].id;
+    const productId = products.products[0]!.id;
 
     const afterAdd = await adapter.addToCart(cart.id, productId, 1);
-    const itemId = afterAdd.items[0].id;
+    const itemId = afterAdd.items[0]!.id;
 
     const updated = await adapter.updateCartItem(cart.id, itemId, 5);
 
-    expect(updated.items[0].quantity).toBe(5);
+    expect(updated.items[0]!.quantity).toBe(5);
     expect(updated.itemCount).toBe(5);
   });
 
   it('removes item when updateCartItem is called with quantity <= 0', async () => {
     const cart = await adapter.createCart();
     const products = await adapter.getProducts({ limit: 1 });
-    const productId = products.products[0].id;
+    const productId = products.products[0]!.id;
 
     const afterAdd = await adapter.addToCart(cart.id, productId, 3);
-    const itemId = afterAdd.items[0].id;
+    const itemId = afterAdd.items[0]!.id;
 
     const updated = await adapter.updateCartItem(cart.id, itemId, 0);
 
@@ -146,7 +146,7 @@ describe('MockAdapter cart operations (mirrors useCartStore logic)', () => {
   it('subtotal equals sum of price * quantity across all items', async () => {
     const cart = await adapter.createCart();
     const products = await adapter.getProducts({ limit: 2 });
-    const [p1, p2] = products.products;
+    const [p1, p2] = products.products as [typeof products.products[0], typeof products.products[0]];
 
     await adapter.addToCart(cart.id, p1.id, 2);
     const final = await adapter.addToCart(cart.id, p2.id, 3);
@@ -158,7 +158,7 @@ describe('MockAdapter cart operations (mirrors useCartStore logic)', () => {
 
   it('resetCarts clears all cart state between tests', async () => {
     const cart = await adapter.createCart();
-    await adapter.addToCart(cart.id, (await adapter.getProducts({ limit: 1 })).products[0].id, 1);
+    await adapter.addToCart(cart.id, (await adapter.getProducts({ limit: 1 })).products[0]!.id, 1);
 
     MockAdapter.resetCarts();
 
